@@ -1,0 +1,777 @@
+/**
+ * Panel styles. Utility-panel priorities: scan speed over decoration —
+ * one accent color, strong type hierarchy, no gradients. Theme via CSS
+ * custom properties + prefers-color-scheme; every interactive element has a
+ * :focus-visible ring (keyboard users are first-class in a panel that lives
+ * next to a keyboard-driven calendar).
+ */
+
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1f1f1f;
+  --muted: #5f6368;
+  --border: #dadce0;
+  --card: #f6f8fa;
+  --accent: #0b57d0;
+  --accent-fg: #ffffff;
+  --danger: #b3261e;
+  --warn: #a05a00;
+  --ok: #1e8e3e;
+  --tentative: #f9ab00;
+  --skel: #e4e7eb;
+
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1f1f1f;
+    --fg: #e3e3e3;
+    --muted: #9aa0a6;
+    --border: #3c4043;
+    --card: #27282b;
+    --accent: #8ab4f8;
+    --accent-fg: #06255b;
+    --danger: #f2b8b5;
+    --warn: #fcc16b;
+    --skel: #333538;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.briefing {
+  padding: 14px 16px 24px;
+  line-height: 1.5;
+}
+
+/* ---- app header ---------------------------------------------------------- */
+
+.briefing__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.briefing__header h1 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.briefing__tagline {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---- buttons / focus ----------------------------------------------------- */
+
+.btn {
+  margin-top: 8px;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: inherit;
+  border: 1px solid var(--border);
+}
+
+.btn--danger {
+  color: var(--danger);
+}
+
+.btn--icon {
+  margin: 0;
+  padding: 4px 9px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  font-size: 1rem;
+}
+
+.btn--icon:hover {
+  border-color: var(--border);
+}
+
+.btn:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* ---- notices ------------------------------------------------------------- */
+
+.notice {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  /* Long API errors must wrap inside the panel, never overflow it. */
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/**
+ * API error text is the entire diagnostic value of the failure state, so it
+ * must never be clipped. Long unbroken tokens (Google's
+ * 'generation_config.response_schema.properties[1].value…' paths) have no
+ * break opportunities, so overflow-wrap:anywhere is required — normal
+ * word-wrap leaves them overflowing the container. user-select makes them
+ * copyable into a bug report.
+ */
+.warn {
+  color: var(--danger);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+
+/* ---- meeting header ------------------------------------------------------ */
+
+.meeting {
+  margin-top: 18px;
+}
+
+.meeting__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.meeting__title {
+  font-size: 1.05rem;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.meeting__join {
+  margin: 0;
+  flex: none;
+  text-decoration: none;
+}
+
+.meeting__when {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.meeting__countdown--urgent {
+  color: var(--warn);
+  font-weight: 600;
+}
+
+.meeting__loc {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---- event description --------------------------------------------------- */
+
+.event__description {
+  margin: 10px 0 0;
+  font-size: 0.88rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.event__description--rich {
+  white-space: normal;
+}
+
+.event__description--rich p {
+  margin: 0 0 6px;
+}
+
+/* ---- RSVP dots ----------------------------------------------------------- */
+
+.event__rsvp {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex: none;
+  display: inline-block;
+}
+
+.event__rsvp--accepted { background: var(--ok); }
+.event__rsvp--declined { background: var(--danger); }
+.event__rsvp--tentative { background: var(--tentative); }
+.event__rsvp--needsAction { background: var(--border); }
+
+/* ---- pre-generation quick list ------------------------------------------- */
+
+.quick {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 0.88rem;
+}
+
+.quick li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 2px 0;
+}
+
+/* ---- pipeline / card ----------------------------------------------------- */
+
+.pipeline {
+  margin-top: 16px;
+  padding-top: 8px;
+}
+
+.pipeline__status {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+.card {
+  margin-top: 8px;
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.card__heading {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin: 16px 0 6px;
+}
+
+.card > section:first-child .card__heading,
+.card > .card__heading:first-child,
+.card > .pipeline__status + .card__heading {
+  margin-top: 0;
+}
+
+.card__agenda {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.card__agenda li {
+  margin: 2px 0;
+}
+
+.card__none {
+  color: var(--muted);
+  font-style: italic;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.card__meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.card__badge {
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* ---- attendees ----------------------------------------------------------- */
+
+.person {
+  padding: 6px 0;
+}
+
+.person__head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.person__name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.person__date {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.78rem;
+  flex: none;
+}
+
+.person__summary {
+  margin: 2px 0 0 15px;
+  color: var(--fg);
+  font-size: 0.86rem;
+}
+
+.person__summary--degraded {
+  color: var(--warn);
+  font-style: italic;
+}
+
+/* ---- documents ----------------------------------------------------------- */
+
+.doc {
+  display: flex;
+  gap: 8px;
+  padding: 5px 0;
+}
+
+.doc__icon {
+  flex: none;
+}
+
+.doc__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.doc__body a,
+.doc__body > span:first-child {
+  overflow-wrap: anywhere;
+}
+
+.doc__meta {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.doc__points {
+  margin-top: 2px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.doc__note {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+/* Listening status in the empty state */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+
+.status--checking {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.status__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  flex: none;
+}
+
+.settings__toggle {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+/* ---- skeletons ----------------------------------------------------------- */
+
+.skel {
+  background: var(--skel);
+  border-radius: 4px;
+  animation: skel-pulse 1.4s ease-in-out infinite;
+}
+
+.skel--line {
+  height: 12px;
+  margin: 7px 0;
+}
+
+.skel--dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 9px;
+}
+
+.skel-row {
+  display: flex;
+  gap: 8px;
+}
+
+@keyframes skel-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skel {
+    animation: none;
+  }
+}
+
+/* ---- key form / settings ------------------------------------------------- */
+
+.keyform {
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.keyform__providers {
+  margin: 4px 0 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.keyform input,
+.settings input[type="password"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.settings {
+  margin-top: 14px;
+  font-size: 0.9rem;
+}
+
+.settings section {
+  margin-top: 18px;
+}
+
+.settings__back {
+  margin: 0;
+}
+
+.settings__keyrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.settings__mask {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.settings__hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 4px 0 0;
+}
+
+.settings__model {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 5px 0;
+  cursor: pointer;
+}
+
+/* ---- provider blocks (Settings + first-run key form) --------------------- */
+
+.provider-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 8px 0 4px;
+}
+
+.provider-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* content centred within each card */
+  text-align: center;
+  gap: 3px;
+  padding: 14px 14px 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.provider-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+/* Selected state uses THREE signals — border weight, background, and the ✓
+   affordance — so it never depends on colour perception alone. */
+.provider-card--on {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+/* Native radio kept in the a11y tree (focusable, arrow-key navigable within
+   the group) but visually replaced by the card itself. */
+.provider-card__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* The hidden input must still produce a visible focus ring on the card. */
+.provider-card:has(.provider-card__input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.provider-card__check {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--accent-fg);
+}
+
+.provider-card--on .provider-card__check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.provider-card__name {
+  font-weight: 600;
+}
+
+.provider-card__desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.provider-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.settings__badge--muted {
+  opacity: 0.6;
+}
+
+.provider-card__warning {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--warn);
+  background: color-mix(in srgb, var(--warn) 10%, transparent);
+  color: var(--fg);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+@media (forced-colors: active) {
+  .provider-card--on {
+    border: 2px solid Highlight;
+  }
+}
+
+/* ---- splash overlay ------------------------------------------------------ */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #0d1117;
+  color: #e6edf3;
+  cursor: pointer;
+  animation: splash-in 220ms ease-out both;
+}
+
+/* Deliberately dark in both themes: this is the brand composition, and a
+   half-second flash of inverted branding on theme change reads as a bug. */
+.splash--leaving {
+  animation: splash-out 320ms ease-in forwards;
+}
+
+.splash__mark {
+  width: clamp(64px, 26vw, 104px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  /* CSS fallback mark, visible until public/assets/logo.png is supplied. */
+  background:
+    radial-gradient(circle at 50% 50%, transparent 54%, #2f81f7 55%, #2f81f7 68%, transparent 69%),
+    radial-gradient(circle at 50% 50%, #2f81f7 0 26%, transparent 27%);
+  animation: splash-mark 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.splash__mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.splash__word {
+  font-size: clamp(1.3rem, 7vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  animation: splash-rise 520ms ease-out 160ms both;
+}
+
+.splash__tag {
+  font-size: clamp(0.72rem, 3.4vw, 0.85rem);
+  color: #9198a1;
+  text-align: center;
+  text-wrap: balance;
+  animation: splash-rise 520ms ease-out 300ms both;
+}
+
+.splash__bar {
+  width: min(200px, 60%);
+  height: 3px;
+  margin-top: 20px;
+  border-radius: 999px;
+  background: #21262d;
+  overflow: hidden;
+}
+
+.splash__bar-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2f81f7, #8ab4f8);
+  transform-origin: left;
+  animation: splash-progress linear both;
+}
+
+.splash__skip {
+  margin-top: 14px;
+  font-size: 0.7rem;
+  color: #6e7681;
+  animation: splash-rise 400ms ease-out 900ms both;
+}
+
+@keyframes splash-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+@keyframes splash-mark {
+  from { opacity: 0; transform: scale(0.82); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes splash-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes splash-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Reduced motion: render the FINAL state statically. The splash still shows
+   and still auto-dismisses on the same schedule — only the motion is gone. */
+@media (prefers-reduced-motion: reduce) {
+  .splash,
+  .splash__mark,
+  .splash__word,
+  .splash__tag,
+  .splash__skip,
+  .splash__bar-fill {
+    animation: none;
+  }
+  .splash--leaving {
+    display: none;
+  }
+}
+
+.settings__badge {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+/* Free-tier data-use notice: informational, not an error — readable but
+   clearly weightier than a hint. */
+.settings__warning {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-left: 3px solid var(--warn);
+  background: color-mix(in srgb, var(--warn) 8%, transparent);
+  color: var(--fg);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}

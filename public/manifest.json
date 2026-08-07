@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "Meeting Pre-Flight Assistant",
+  "version": "0.1.0",
+  "description": "Generates a one-page briefing card before your meetings from Calendar, Gmail, and Drive context.",
+  "minimum_chrome_version": "116",
+
+  "permissions": ["sidePanel", "identity", "storage", "scripting"],
+
+  "host_permissions": [
+    "https://calendar.google.com/*",
+    "https://meet.google.com/*",
+    "https://www.googleapis.com/*",
+    "https://gmail.googleapis.com/*",
+    "https://api.anthropic.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://calendar.google.com/*"],
+      "js": ["content/calendar.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+
+  "action": {
+    "default_title": "Open Meeting Pre-Flight briefing"
+  },
+
+  "oauth2": {
+    "client_id": "31164363888-g2uldoq15923qosq24dfgkun1d0k5mnj.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly",
+      "https://www.googleapis.com/auth/gmail.readonly",
+      "https://www.googleapis.com/auth/drive.metadata.readonly"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "meeting-preflight-assistant",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build:content && vite build --watch --mode development",
+    "build": "vite build && npm run build:content",
+    "build:content": "vite build --mode content"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.12",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.6.0",
+    "vite": "^7.0.0"
+  }
+}
