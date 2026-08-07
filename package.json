@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "npm run build:content && vite build --watch --mode development",
     "build": "vite build && npm run build:content",
-    "build:content": "vite build --mode content"
+    "build:content": "vite build --mode content",
+    "test": "node tests/run-all.mjs"
   },
   "dependencies": {
     "dompurify": "^3.4.12",
