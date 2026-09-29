@@ -11,6 +11,21 @@ the agenda, the most recent genuine email thread with each attendee, and the
 Drive documents that relate to the meeting — synthesised by Claude or Gemini
 into something you can read in the lift.
 
+## Verification
+
+Install the locked dependencies and run the full local verification flow:
+
+```sh
+npm ci
+npm test
+npm run build:verify
+npm audit --omit=dev
+```
+
+`build:verify` creates both MV3 bundles and validates that every script named
+by the generated manifest exists in `dist/`. The same checks run in
+`.github/workflows/extension.yml` for pushes and pull requests.
+
 ![The briefing card in the Chrome side panel, showing the meeting header with
 a countdown and Join button, a core agenda list, per-attendee last-contact
 summaries with RSVP indicators, and linked Drive documents](docs/briefing-card.png)

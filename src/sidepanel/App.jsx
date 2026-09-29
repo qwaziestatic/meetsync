@@ -319,11 +319,7 @@ function BriefingArea({ event, briefing, onConnect, authBusy }) {
           {/* Rate limits and safety blocks are normal operating states, not
               breakage — say so, and keep the same cheap retry (checkpointing
               means it resumes at synthesis, no re-querying Gmail/Drive). */}
-          {briefing.llmCode === 'rate_limit' || briefing.llmCode === 'safety' ? (
-            <p className="warn">{briefing.message}</p>
-          ) : (
-            <p className="warn">Briefing failed: {briefing.message}</p>
-          )}
+          <p className="warn">{briefingErrorMessage(briefing)}</p>
           <button className="btn" onClick={generate}>Retry</button>
         </div>
       )}
@@ -341,6 +337,24 @@ function BriefingArea({ event, briefing, onConnect, authBusy }) {
       )}
     </section>
   );
+}
+
+function briefingErrorMessage(briefing) {
+  const message = briefing.message || 'The briefing could not be generated.';
+  switch (briefing.llmCode) {
+    case 'rate_limit':
+      return `${message} Wait a moment, then retry.`;
+    case 'bad_key':
+      return `${message} Update the provider key in Settings, then retry.`;
+    case 'safety':
+      return `${message} Try removing sensitive or unrelated text from the invite, then retry.`;
+    case 'truncated':
+      return `${message} Retry to generate a shorter briefing.`;
+    case 'api':
+      return `${message} Check your connection and provider status, then retry.`;
+    default:
+      return `Briefing failed: ${message}`;
+  }
 }
 
 /** Compact pre-generation glance at who's coming (card rows replace this). */

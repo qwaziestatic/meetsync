@@ -7,6 +7,8 @@
     "dev": "npm run build:content && vite build --watch --mode development",
     "build": "vite build && npm run build:content",
     "build:content": "vite build --mode content",
+    "validate-dist": "node scripts/validate-dist.mjs",
+    "build:verify": "npm run build && npm run validate-dist",
     "test": "node tests/run-all.mjs"
   },
   "dependencies": {

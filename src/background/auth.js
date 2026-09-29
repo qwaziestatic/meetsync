@@ -196,7 +196,7 @@ export async function fetchWithAuth(input, init = {}) {
   const doFetch = (token) =>
     fetch(input, {
       ...init,
-      headers: { ...(init.headers ?? {}), Authorization: `Bearer ${token}` },
+      headers: { ...(init.headers ?? {}), Authorization: 'Bearer ' + token },
     });
 
   const { token } = await getToken();

@@ -24,6 +24,7 @@ const SUITES = [
   ['verify-calendar-filter.mjs', 'Calendar-notification filtering, empty vs degraded'],
   ['verify-doccontent.mjs', 'document text extraction + injection boundary'],
   ['verify-injection.mjs', 'content-script injection, Calendar URL extraction'],
+  ['verify-auth.mjs', 'authorization headers and 401 token recovery'],
 ];
 
 const run = (file) =>
