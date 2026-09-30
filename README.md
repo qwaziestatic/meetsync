@@ -26,7 +26,10 @@ npm audit --omit=dev
 by the generated manifest exists in `dist/`. The same checks run in
 `.github/workflows/extension.yml` for pushes and pull requests.
 
-![The briefing card in the Chrome side panel, showing the meeting header with
+The screenshot below uses illustrative data to show the briefing card in the
+Chrome side panel without exposing private calendar, email, or Drive content.
+
+![Example briefing card in the Chrome side panel, showing the meeting header with
 a countdown and Join button, a core agenda list, per-attendee last-contact
 summaries with RSVP indicators, and linked Drive documents](docs/briefing-card.png)
 
